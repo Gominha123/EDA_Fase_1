@@ -1,0 +1,12 @@
+﻿  Funcoes.c
+C:\Users\acer\Documents\Programas C\Trabalho EDA Fase1\Trabalho EDA Fase1\Funcoes.c(48,30): warning C4013: 'malloc' undefined; assuming extern returning int
+C:\Users\acer\Documents\Programas C\Trabalho EDA Fase1\Trabalho EDA Fase1\Funcoes.c(137,16): warning C4013: 'existeJob' undefined; assuming extern returning int
+C:\Users\acer\Documents\Programas C\Trabalho EDA Fase1\Trabalho EDA Fase1\Funcoes.c(186,17): warning C4013: 'existeOper' undefined; assuming extern returning int
+C:\Users\acer\Documents\Programas C\Trabalho EDA Fase1\Trabalho EDA Fase1\Funcoes.c(239,16): warning C4013: 'existeMaq' undefined; assuming extern returning int
+C:\Users\acer\Documents\Programas C\Trabalho EDA Fase1\Trabalho EDA Fase1\Funcoes.c(317,6): warning C4013: 'free' undefined; assuming extern returning int
+  Main.c
+C:\Users\acer\Documents\Programas C\Trabalho EDA Fase1\Trabalho EDA Fase1\Main.c(14,30): warning C4013: 'malloc' undefined; assuming extern returning int
+C:\Users\acer\Documents\Programas C\Trabalho EDA Fase1\Trabalho EDA Fase1\Main.c(17,11): warning C4101: 'max': unreferenced local variable
+C:\Users\acer\Documents\Programas C\Trabalho EDA Fase1\Trabalho EDA Fase1\Main.c(17,6): warning C4101: 'min': unreferenced local variable
+  Generating Code...
+  Trabalho EDA Fase1.vcxproj -> C:\Users\acer\Documents\Programas C\Trabalho EDA Fase1\Debug\Trabalho EDA Fase1.exe
