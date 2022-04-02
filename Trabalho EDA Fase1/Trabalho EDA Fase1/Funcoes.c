@@ -76,48 +76,6 @@ job* lerFile()
 				processo->operacao = insereMaquina(processo->operacao, aux->operacao->MaqTemp);
 			}
 
-			//processo = insereJob()
-
-			//if (processo->cod == jobCod)	//caso os codigos de job sejam iguais, insere dentro do mesmo job as operaçoes
-			//{
-			//	if (processo->operacao->cod == opCod)		//caso o codigo da operaçao seja igual, insere a maquina e o tempo na mesma operação
-			//	{
-			//		aux = processo;
-			//		processo->operacao->MaqTemp->maquina;
-			//		processo->operacao->MaqTemp->tempo;
-			//		processo->operacao->MaqTemp->seguinte = aux->operacao->MaqTemp;
-			//	}
-			//}
-			//else
-			//{
-			//	()
-			//}
-
-			//if (processo->cod == jobCod)	//caso os codigos de job sejam iguais, insere dentro do mesmo job as operaçoes
-			//{
-			//	if (processo->operacao->cod == opCod)		//caso o codigo da operaçao seja igual, insere a maquina e o tempo na mesma operação
-			//	{
-			//		processo->operacao = insereMaquina(processo->operacao, criaMaq(maq, tem));
-			//	}
-			//	else
-			//	{
-			//		aux->operacao = criaOper(opCod);
-			//		aux->operacao = insereMaquina(criaOper(opCod), criaMaq(maq, tem));	//cria maquina e insere dentro da operaçao	
-			//		processo = inserirOper(processo, aux->operacao);		//insere operaçao dentro do job
-			//	}
-			//}
-			//else
-			//{
-			//	aux = criaJob(jobCod);
-			//	aux->operacao = criaOper(opCod);
-			//	aux->operacao->MaqTemp = criaMaq(maq, tem);
-			//	/*aux->operacao = insereMaquina(aux->operacao,aux->operacao->MaqTemp);
-			//	aux = inserirOper(processo, aux->operacao);
-			//	processo = insereJob(aux, processo);*/
-
-			//	processo = aux;
-			//}
-
 			if (feof(fj))
 			{
 				break;
