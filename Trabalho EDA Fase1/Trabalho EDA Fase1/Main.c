@@ -11,12 +11,15 @@
 
 int main()
 {
-	job* headlist = (job*)malloc(sizeof(job));
+	job* headlist = NULL;
 	headlist = lerFile();
 	float media;
 	int	min, max;
 
-	headlist = criaJob(1);
+	if (!headlist)
+	{
+		headlist = criaJob(1);
+	}
 
 	operacao* op1 = criaOper(123);
 	operacao* op2 = criaOper(456);

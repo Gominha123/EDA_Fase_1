@@ -45,11 +45,8 @@ job* lerFile()
 	FILE* fj;
 	int jobCod, opCod, maq, tem;
 
-	job* processo = (job*)malloc(sizeof(job));
-	job* aux = (job*)malloc(sizeof(job));
-
-	if (!processo) return NULL;	//caso não exista memória
-	if (!aux) return NULL;
+	job* processo = NULL;
+	job* aux = NULL;
 
 	fj = fopen("Job.txt", "r");
 
@@ -58,7 +55,28 @@ job* lerFile()
 		do
 		{
 
-			fscanf(fj, "%d;%d;%d;%d", &jobCod, &opCod, &maq, &tem);
+			if (!processo)
+			{
+				fscanf(fj, "%d;%d;%d;%d", &jobCod, &opCod, &maq, &tem);
+
+				processo = criaJob(jobCod);
+				processo->operacao = criaOper(opCod);
+				processo->operacao->MaqTemp = criaMaq(maq, tem);
+
+			}
+			else
+			{
+				fscanf(fj, "%d;%d;%d;%d", &jobCod, &opCod, &maq, &tem);
+
+				aux = criaJob(jobCod);
+				aux->operacao = criaOper(opCod);
+				aux->operacao->MaqTemp = criaMaq(maq, tem);
+				processo = insereJob(processo, aux);
+				processo = inserirOper(processo, aux->operacao);
+				processo->operacao = insereMaquina(processo->operacao, aux->operacao->MaqTemp);
+			}
+
+			//processo = insereJob()
 
 			//if (processo->cod == jobCod)	//caso os codigos de job sejam iguais, insere dentro do mesmo job as operaçoes
 			//{
@@ -75,30 +93,30 @@ job* lerFile()
 			//	()
 			//}
 
-			if (processo->cod == jobCod)	//caso os codigos de job sejam iguais, insere dentro do mesmo job as operaçoes
-			{
-				if (processo->operacao->cod == opCod)		//caso o codigo da operaçao seja igual, insere a maquina e o tempo na mesma operação
-				{
-					processo->operacao = insereMaquina(processo->operacao, criaMaq(maq, tem));
-				}
-				else
-				{
-					aux->operacao = criaOper(opCod);
-					aux->operacao = insereMaquina(criaOper(opCod), criaMaq(maq, tem));	//cria maquina e insere dentro da operaçao	
-					processo = inserirOper(processo, aux->operacao);		//insere operaçao dentro do job
-				}
-			}
-			else
-			{
-				aux = criaJob(jobCod);
-				aux->operacao = criaOper(opCod);
-				aux->operacao->MaqTemp = criaMaq(maq, tem);
-				/*aux->operacao = insereMaquina(aux->operacao,aux->operacao->MaqTemp);
-				aux = inserirOper(processo, aux->operacao);
-				processo = insereJob(aux, processo);*/
+			//if (processo->cod == jobCod)	//caso os codigos de job sejam iguais, insere dentro do mesmo job as operaçoes
+			//{
+			//	if (processo->operacao->cod == opCod)		//caso o codigo da operaçao seja igual, insere a maquina e o tempo na mesma operação
+			//	{
+			//		processo->operacao = insereMaquina(processo->operacao, criaMaq(maq, tem));
+			//	}
+			//	else
+			//	{
+			//		aux->operacao = criaOper(opCod);
+			//		aux->operacao = insereMaquina(criaOper(opCod), criaMaq(maq, tem));	//cria maquina e insere dentro da operaçao	
+			//		processo = inserirOper(processo, aux->operacao);		//insere operaçao dentro do job
+			//	}
+			//}
+			//else
+			//{
+			//	aux = criaJob(jobCod);
+			//	aux->operacao = criaOper(opCod);
+			//	aux->operacao->MaqTemp = criaMaq(maq, tem);
+			//	/*aux->operacao = insereMaquina(aux->operacao,aux->operacao->MaqTemp);
+			//	aux = inserirOper(processo, aux->operacao);
+			//	processo = insereJob(aux, processo);*/
 
-				processo = aux;
-			}
+			//	processo = aux;
+			//}
 
 			if (feof(fj))
 			{
@@ -117,7 +135,7 @@ job* lerFile()
 #pragma endregion
 
 #pragma region inserir
-/*		
+/*
 		* @brief Insere um novo job no início da estrutura
 		* @param[in] headlist    Inicio da Lista
 		* @param[in] processo    Novo job a inserir
@@ -125,7 +143,7 @@ job* lerFile()
 */
 job* insereJob(job* processo, job* headlist)
 {
-	if (!processo) return NULL;
+	job* aux = NULL;
 	if (!headlist) return NULL;
 
 	if (!processo)		//se não existir nenhuma operaçao no job,insere a operaçao recebida
@@ -134,10 +152,12 @@ job* insereJob(job* processo, job* headlist)
 	}
 	else
 	{
-		if (existeJob(processo, processo->cod) == 1) return processo; //se ja existir a operaçao no job, nao insere
+		if (existeJob(processo, headlist->cod) == 1) return processo; //se ja existir a operaçao no job, nao insere
 		else
 		{
-			processo->seguinte = headlist;
+			aux = processo;
+			processo = headlist;
+			processo->seguinte = aux;
 		}
 	}
 
@@ -431,6 +451,8 @@ job* remover(job* processo, int cod)
 {
 	operacao* aux;
 
+	if (!processo) return NULL;
+
 	if (processo->operacao)	//verificar se apontador é valido
 	{
 		if (processo->operacao->cod == cod) //na primeira posição
@@ -464,6 +486,8 @@ job* alterarOp(job* p, int cod, int novoCod)
 {
 	operacao* aux;
 
+	if (!p) return NULL;
+
 	aux = searchOp(p->operacao, cod);
 	aux->cod = novoCod;
 
@@ -485,6 +509,8 @@ job* alterarMaq(job* p, int opCod, int maq, int novamaq, int novotempo)
 	maqTempo* aux;
 	operacao* aux2;
 
+	if (!p) return NULL;
+
 	aux2 = searchOp(p->operacao, opCod);
 	aux = searchMaq(aux2->MaqTemp, maq);
 
@@ -502,10 +528,13 @@ job* alterarMaq(job* p, int opCod, int maq, int novamaq, int novotempo)
 #pragma region calculos
 
 /*
-* @brief	retorna a maquina que demora a maquina com o menor tempo
+* @brief	retorna a maquina que o menor tempo
 */
 maqTempo* tempoMin(operacao* op)
 {
+
+	if (!op) return NULL;
+
 	if (!op->MaqTemp)
 	{
 		return NULL;
@@ -527,10 +556,14 @@ maqTempo* tempoMin(operacao* op)
 
 
 /*
-* @brief	retorna a maquina que demora a maquina com o maior tempo
+* @brief	retorna a maquina que demora o maior tempo
 */
 maqTempo* tempoMax(operacao* op)
 {
+
+	if (!op) return NULL;
+	
+
 	if (!op->MaqTemp)
 	{
 		return NULL;
@@ -554,7 +587,7 @@ maqTempo* tempoMax(operacao* op)
 /*
 * @brief	calcula o tempo médio para realizar uma operaçao
 * @param[in]	op	operações
-* return	tempo médio 
+* return	tempo médio
 */
 
 float calculaMedia(operacao* op)
